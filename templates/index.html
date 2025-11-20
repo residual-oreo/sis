@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirror Mirror - The Choice</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="home-page">
+
+  <div class="main-content">
+    <h1>Mirror mirror, who has the biggest forehead of them all...</h1>
+
+    <div class="choices-grid">
+      <!-- Wrong Choice 1 -->
+      <a href="#" class="choice-item wrong-choice">
+        <img src="{% static 'images/for1.jpg' %}" alt="">
+      </a>
+
+      <!-- Correct Choice -->
+      <a href="{% url 'slideshow' %}" class="choice-item">
+        <img src="{% static 'images/sis.jpg' %}" alt="">
+      </a>
+
+      <!-- Wrong Choice 2 -->
+      <a href="#" class="choice-item wrong-choice">
+        <img src="{% static 'images/for2.jpg' %}" alt="">
+      </a>
+      
+      <!-- Wrong Choice 3 -->
+      <a href="#" class="choice-item wrong-choice">
+        <img src="{% static 'images/for3.jpg' %}" alt="">
+      </a>
+    </div>
+  </div>
+
+  <!-- "WRONG" Overlay -->
+  <div id="wrongOverlay" class="wrong-overlay">
+    <span>WRONG</span>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Shuffle Choices ---
+      const grid = document.querySelector('.choices-grid');
+      const choices = Array.from(grid.children);
+      
+      // Fisher-Yates shuffle algorithm
+      for (let i = choices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [choices[i], choices[j]] = [choices[j], choices[i]];
+      }
+      
+      // Re-append shuffled choices
+      choices.forEach(choice => grid.appendChild(choice));
+
+      // --- "WRONG" Overlay Logic ---
+      const wrongChoices = document.querySelectorAll('.wrong-choice');
+      const overlay = document.getElementById('wrongOverlay');
+
+      wrongChoices.forEach(choice => {
+        choice.addEventListener('click', (e) => {
+          e.preventDefault();
+          overlay.style.display = 'flex';
+        });
+      });
+
+      overlay.addEventListener('click', () => {
+        overlay.style.display = 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
