@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slideshow - Forehead Royalty</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="slideshow-body">
+<h1>👑 Joy's Royal Forehead Odyssey 👑</h1>
+
+<!-- Mute/Unmute Button -->
+<button id="muteBtn" class="mute-btn">🔊</button>
+
+<!-- Audio Player (hidden) -->
+<audio id="audioPlayer" autoplay>
+  <source src="assets/audio/unhinged.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- Slideshow -->
+<div class="slideshow-box">
+  <img id="slideImg" src="assets/images/sis.jpg" />
+  <button id="prevSlide" class="btn">◀</button>
+  <button id="nextSlide" class="btn">▶</button>
+</div>
+
+<!-- Long story -->
+<div class="story" id="story">
+<h2>The Long, Unhinged, Absolutely Necessary Forehead Lore</h2>
+<p>Once upon a midnight glow-up, deep in the kingdom of Edges & Echoes, there lived a girl named Joy — the undisputed keeper of the Celestial Forehead...</p>
+<p>...Joy — the one, the only, the eternal Forehead Royalty. 👑</p>
+</div>
+
+<script>
+// --- Slideshow Logic ---
+const slides = [
+  "assets/images/sis.jpg",
+  "assets/images/sis2.jpg",
+  "assets/images/sis3.jpg",
+  "assets/images/sis4.jpg",
+  "assets/images/sis5.jpg",
+  "assets/images/sis6.jpg",
+  "assets/images/sis7.jpg"
+];
+let currentIndex = 0;
+let slideInterval;
+const imgElement = document.getElementById('slideImg');
+
+// Function to change the slide with a fade effect
+const changeSlide = (newIndex) => {
+  imgElement.style.opacity = 0;
+  setTimeout(() => {
+    currentIndex = (newIndex + slides.length) % slides.length;
+    imgElement.src = slides[currentIndex];
+    imgElement.style.opacity = 1;
+  }, 500); // This should match the CSS transition time
+};
+
+// Function to go to the next slide
+const goToNextSlide = () => {
+  changeSlide(currentIndex + 1);
+};
+
+// Function to start the automatic slideshow
+const startSlideshow = () => {
+  slideInterval = setInterval(goToNextSlide, 3000); // Change slide every 3 seconds
+};
+
+// Function to reset the timer when a manual control is used
+const resetTimer = () => {
+  clearInterval(slideInterval);
+  startSlideshow();
+};
+
+// Manual controls
+document.getElementById('prevSlide').onclick = () => {
+  changeSlide(currentIndex - 1);
+  resetTimer();
+};
+
+document.getElementById('nextSlide').onclick = () => {
+  goToNextSlide();
+  resetTimer();
+};
+
+// --- Audio Logic ---
+const audio = document.getElementById('audioPlayer');
+const muteBtn = document.getElementById('muteBtn');
+
+muteBtn.addEventListener('click', () => {
+  audio.muted = !audio.muted;
+  muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+});
+
+// Start the slideshow when the page loads
+document.addEventListener('DOMContentLoaded', startSlideshow);
+</script>
+</body>
+</html>
